@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
-from jpype import startJVM, getDefaultJVMPath, shutdownJVM, java, JPackage, JString
-from zhconvert import ZHConvert
+try:
+    from jpype import startJVM, getDefaultJVMPath, shutdownJVM, java, JPackage, JString
+    from zhconvert import ZHConvert
+except:
+    pass
 from os.path import join, dirname
 
 universal_tagset = {

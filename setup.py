@@ -9,10 +9,11 @@ class CompileParser(install):
         install.run(self)
         import stanford_parser
         pwd = stanford_parser.__path__[0]
+        print 'install path', pwd
 
         subprocess.Popen(['wget', 'https://github.com/banyh/StanfordParserServer/archive/PyStanfordParser.zip'], cwd=pwd)
         subprocess.Popen(['unzip', '-o', '-j', 'PyStanfordParser.zip'], cwd=pwd)
-        subprocess.Popen(['sh', 'install.sh'], cwd=pwd)
+        subprocess.Popen(['install.sh'], cwd=pwd)
 
 
 setup(name='PyStanfordParser',
@@ -24,12 +25,13 @@ setup(name='PyStanfordParser',
       license='MIT',
       packages=['stanford_parser'],
       zip_safe=False,
+      install_requires=[
+          'numpy',
+          'jpype1',
+      ],
       cmdclass={
           'install': CompileParser,
       },
-      install_requires=[
-          'jpype1',
-      ],
       test_suite='nose.collector',
       tests_require=['nose'],
       include_package_data=True,)
