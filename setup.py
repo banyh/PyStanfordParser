@@ -1,23 +1,29 @@
 from setuptools import setup
 from setuptools.command.install import install
 import subprocess
-from os.path import join, dirname
+from os.path import join, dirname, isfile
+import sys
+import time
 
 
 class CompileParser(install):
     def run(self):
         install.run(self)
+        sys.path.reverse()
         import stanford_parser
         pwd = stanford_parser.__path__[0]
-        print 'install path', pwd
 
         subprocess.Popen(['wget', 'https://github.com/banyh/StanfordParserServer/archive/PyStanfordParser.zip'], cwd=pwd)
+        while not isfile(join(pwd, 'PyStanfordParser.zip')):
+            time.sleep(0.1)
         subprocess.Popen(['unzip', '-o', '-j', 'PyStanfordParser.zip'], cwd=pwd)
-        subprocess.Popen(['install.sh'], cwd=pwd)
+        while not isfile(join(pwd, 'install.sh')):
+            time.sleep(0.1)
+        subprocess.Popen(['./install.sh'], cwd=pwd, shell=True)
 
 
 setup(name='PyStanfordParser',
-      version='0.1.0',
+      version='0.2.0',
       description='Wrapping Stanford parser as a python package',
       url='https://github.com/banyh/PyStanfordParser',
       author='Ping Chu Hung',
